@@ -12,7 +12,7 @@
     <properties>
 
         <!-- Generic properties -->
-        <java.version>21</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
@@ -273,16 +273,16 @@
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
         </dependency>
-	<!-- <dependency>
+	<dependency>
 	    <groupId>jakarta.xml.bind</groupId>
 	    <artifactId>jakarta.xml.bind-api</artifactId>
-	    <version>3.0.2</version>
+	    <version>2.3.3</version>
 	</dependency>
 	<dependency>
 	    <groupId>org.glassfish.jaxb</groupId>
 	    <artifactId>jaxb-runtime</artifactId>
-	    <version>3.0.2</version>
-	</dependency> -->
+	    <version>2.3.3</version>
+	</dependency>
 	
     </dependencies>
 
