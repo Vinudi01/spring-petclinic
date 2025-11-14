@@ -10,7 +10,8 @@
     <packaging>war</packaging>
 
     <properties>
-        <!-- Upgrade Java version -->
+
+        <!-- Generic properties -->
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -18,6 +19,7 @@
         <!-- Spring -->
         <spring-io-platform.version>2.0.3.RELEASE</spring-io-platform.version>
         <spring-data-jdbc.version>1.1.0.RELEASE</spring-data-jdbc.version>
+
 
         <!-- Java EE / Java SE dependencies -->
         <tomcat.version>7.0.59</tomcat.version>
@@ -38,6 +40,7 @@
         <dandelion.datatables.version>1.1.0</dandelion.datatables.version>
 
         <cobertura.version>2.7</cobertura.version>
+
     </properties>
 
     <dependencyManagement>
@@ -85,15 +88,13 @@
             <groupId>org.apache.taglibs</groupId>
             <artifactId>taglibs-standard-jstlel</artifactId>
         </dependency>
-
-        <!-- JSON -->
+        <!--  JSon -->
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
             <scope>test</scope>
         </dependency>
-
-        <!-- SPRING -->
+        <!-- SPRING, SPRING, SPRINGITY SPRING -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
@@ -102,6 +103,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jdbc-core</artifactId>
@@ -111,6 +113,7 @@
                     <groupId>org.springframework</groupId>
                     <artifactId>*</artifactId>
                 </exclusion>
+                <!--  because Spring Data usually comes with a slightly older version of Spring -->
             </exclusions>
         </dependency>
 
@@ -122,6 +125,7 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
         </dependency>
+        <!-- used for EhCacheCacheManager -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
@@ -141,13 +145,17 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- Database connection pool
+        See here for more details on commons-dbcp versus tomcat-jdbc:
+        http://blog.ippon.fr/2013/03/13/improving-the-performance-of-the-spring-petclinic-sample-application-part-3-of-5/
+    -->
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jdbc</artifactId>
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Logging -->
+        <!-- Logging with SLF4J & LogBack -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -174,14 +182,21 @@
             <version>${jodatime-jsptags.version}</version>
         </dependency>
 
-        <!-- Databases -->
+        <!-- Databases - Uses HSQL by default -->
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Hibernate -->
+        <!-- For MySql only -->
+        <!--dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-driver.version}</version>
+        </dependency-->
+
+        <!-- HIBERNATE -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
@@ -190,6 +205,7 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-ehcache</artifactId>
@@ -249,31 +265,20 @@
             <artifactId>datatables-export-itext</artifactId>
             <version>${dandelion.datatables.version}</version>
         </dependency>
+        <!-- temporary fix: below dependency should not be necessary as it is a transitive dependency.
+        For some reason we can't build the app unless it is a first level dependency -->
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
         </dependency>
-		
-	<!-- JAXB API -->
-	<dependency>
-	    <groupId>jakarta.xml.bind</groupId>
-	    <artifactId>jakarta.xml.bind-api</artifactId>
-	    <version>2.3.3</version>
-	</dependency>
-
-	<!-- JAXB Runtime (implementation) -->
-	<dependency>
-	    <groupId>org.glassfish.jaxb</groupId>
-	    <artifactId>jaxb-runtime</artifactId>
-	    <version>2.3.5</version>
-	</dependency>
-
     </dependencies>
 
+    <!-- Maven plugin versions are mentioned in order to guarantee the build reproducibility in the long term -->
     <build>
         <defaultGoal>install</defaultGoal>
         <testResources>
             <testResource>
+                <!-- declared explicitly so Spring config files can be placed next to their corresponding JUnit test class  -->
                 <directory>${project.basedir}/src/test/java</directory>
             </testResource>
             <testResource>
@@ -284,20 +289,21 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.0</version>
                 <configuration>
+                    <compilerArguments>
+                        <Xlint/>
+                    </compilerArguments>
+                    <verbose>true</verbose>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                     <showWarnings>true</showWarnings>
-                    <compilerArgs>
-                        <arg>-Xlint:all</arg>
-                    </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
+                <version>2.13</version>
                 <configuration>
                     <includes>
                         <include>**/*Tests.java</include>
@@ -363,7 +369,7 @@
                 <artifactId>cobertura-maven-plugin</artifactId>
                 <version>${cobertura.version}</version>
                 <configuration>
-                    <skip>true</skip>
+                    <check/>
                 </configuration>
                 <executions>
                     <execution>
@@ -376,48 +382,51 @@
             </plugin>
         </plugins>
     </build>
-
     <reporting>
         <plugins>
+
+            <!--  integrate maven-cobertura-plugin to project site  -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
                 <version>${cobertura.version}</version>
                 <configuration>
-                    <skip>true</skip>
+                    <formats>
+                        <format>html</format>
+                    </formats>
+                    <check/>
                 </configuration>
             </plugin>
         </plugins>
     </reporting>
-
     <profiles>
-        <profile>
-            <id>bower-install</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>1.4.0</version>
-                        <executions>
-                            <execution>
-                                <phase>generate-sources</phase>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <executable>bower</executable>
-                            <arguments>
-                                <argument>install</argument>
-                            </arguments>
-                            <workingDirectory>${basedir}</workingDirectory>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
+		<profile>
+			<id>bower-install</id>
+  			<build>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>exec-maven-plugin</artifactId>
+                    <version>1.4.0</version>
+					<executions>
+						<execution>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>exec</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<executable>bower</executable>
+						<arguments>
+							<argument>install</argument>
+						</arguments>
+						<workingDirectory>${basedir}</workingDirectory>
+					</configuration>
+				</plugin>
+			</plugins>
+		  </build>
+		</profile>
         <profile>
             <id>less-install</id>
             <build>
@@ -445,7 +454,7 @@
                 </plugins>
             </build>
         </profile>
-    </profiles>
+   </profiles>
 
     <url>demopetclinic</url>
 </project>
