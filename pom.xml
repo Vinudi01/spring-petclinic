@@ -10,30 +10,22 @@
     <packaging>war</packaging>
 
     <properties>
-        <!-- Upgrade Java version -->
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <!-- Spring -->
         <spring-io-platform.version>2.0.3.RELEASE</spring-io-platform.version>
         <spring-data-jdbc.version>1.1.0.RELEASE</spring-data-jdbc.version>
 
-        <!-- Java EE / Java SE dependencies -->
         <tomcat.version>7.0.59</tomcat.version>
-
-        <!-- Test -->
         <assertj.version>2.2.0</assertj.version>
 
-        <!-- Dates -->
         <jodatime-hibernate.version>1.3</jodatime-hibernate.version>
         <jodatime-jsptags.version>1.1.1</jodatime-jsptags.version>
         <jadira-usertype-core.version>3.2.0.GA</jadira-usertype-core.version>
 
-        <!-- Others -->
         <mysql-driver.version>5.1.36</mysql-driver.version>
 
-        <!-- Web dependencies -->
         <dandelion.version>1.1.1</dandelion.version>
         <dandelion.datatables.version>1.1.0</dandelion.datatables.version>
 
@@ -41,7 +33,6 @@
     </properties>
 
     <dependencyManagement>
-        <!-- Import the maven Spring IO Platform Bill Of Materials (BOM) -->
         <dependencies>
             <dependency>
                 <groupId>io.spring.platform</groupId>
@@ -86,14 +77,12 @@
             <artifactId>taglibs-standard-jstlel</artifactId>
         </dependency>
 
-        <!-- JSON -->
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
             <scope>test</scope>
         </dependency>
 
-        <!-- SPRING -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
@@ -147,7 +136,6 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -158,7 +146,6 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Date and Time -->
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
@@ -174,14 +161,12 @@
             <version>${jodatime-jsptags.version}</version>
         </dependency>
 
-        <!-- Databases -->
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Hibernate -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
@@ -205,7 +190,6 @@
             </exclusions>
         </dependency>
 
-        <!-- Test Artifacts -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
@@ -233,7 +217,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Dandelion -->
         <dependency>
             <groupId>com.github.dandelion</groupId>
             <artifactId>dandelion-jsp</artifactId>
@@ -241,37 +224,15 @@
         </dependency>
         <dependency>
             <groupId>com.github.dandelion</groupId>
-            <artifactId>datatables-jsp</artifactId>
+            <artifactId>dandelion-datatables</artifactId>
             <version>${dandelion.datatables.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.github.dandelion</groupId>
-            <artifactId>datatables-export-itext</artifactId>
-            <version>${dandelion.datatables.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.googlecode.json-simple</groupId>
-            <artifactId>json-simple</artifactId>
-        </dependency>
-		
-	<!-- JAXB API -->
-	<dependency>
-	    <groupId>jakarta.xml.bind</groupId>
-	    <artifactId>jakarta.xml.bind-api</artifactId>
-	    <version>2.3.3</version>
-	</dependency>
-
-	<!-- JAXB Runtime (implementation) -->
-	<dependency>
-	    <groupId>org.glassfish.jaxb</groupId>
-	    <artifactId>jaxb-runtime</artifactId>
-	    <version>2.3.5</version>
-	</dependency>
 
     </dependencies>
 
     <build>
         <defaultGoal>install</defaultGoal>
+
         <testResources>
             <testResource>
                 <directory>${project.basedir}/src/test/java</directory>
@@ -280,7 +241,9 @@
                 <directory>${project.basedir}/src/test/resources</directory>
             </testResource>
         </testResources>
+
         <plugins>
+            <!-- Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -294,6 +257,8 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
+
+            <!-- Surefire Plugin for Tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -304,6 +269,8 @@
                     </includes>
                 </configuration>
             </plugin>
+
+            <!-- Maven WAR Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -312,58 +279,14 @@
                     <warName>petclinic</warName>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-eclipse-plugin</artifactId>
-                <version>2.9</version>
-                <configuration>
-                    <downloadSources>true</downloadSources>
-                    <downloadJavadocs>true</downloadJavadocs>
-                    <wtpversion>2.0</wtpversion>
-                    <sourceIncludes>
-                        <sourceInclude>**/*.*</sourceInclude>
-                    </sourceIncludes>
-                    <additionalBuildcommands>
-                        <buildCommand>
-                            <name>org.springframework.ide.eclipse.core.springbuilder</name>
-                        </buildCommand>
-                        <buildCommand>
-                            <name>org.eclipse.m2e.core.maven2Builder</name>
-                        </buildCommand>
-                    </additionalBuildcommands>
-                    <additionalProjectnatures>
-                        <projectnature>org.eclipse.jdt.core.javanature</projectnature>
-                        <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
-                        <projectnature>org.eclipse.m2e.core.maven2Nature</projectnature>
-                    </additionalProjectnatures>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.4</version>
-                <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.2</version>
-                <configuration>
-                    <server>tomcat-development-server</server>
-                    <port>9966</port>
-                    <path>/petclinic</path>
-                </configuration>
-            </plugin>
+
+            <!-- Cobertura Plugin -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
                 <version>${cobertura.version}</version>
                 <configuration>
-                    <skip>true</skip>
+                    <skip>true</skip> <!-- Skip Cobertura Plugin -->
                 </configuration>
                 <executions>
                     <execution>
@@ -374,17 +297,29 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- SonarQube Plugin -->
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.9.0.2155</version>
+                <configuration>
+                    <sonar.host.url>http://localhost:9000</sonar.host.url> <!-- Adjust SonarQube URL -->
+                    <sonar.login>${sonar.login}</sonar.login> <!-- Sonar login token -->
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
     <reporting>
         <plugins>
+            <!-- Disable Cobertura Plugin for reporting -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
                 <version>${cobertura.version}</version>
                 <configuration>
-                    <skip>true</skip>
+                    <skip>true</skip> <!-- Skip Cobertura in reporting -->
                 </configuration>
             </plugin>
         </plugins>
@@ -392,60 +327,22 @@
 
     <profiles>
         <profile>
-            <id>bower-install</id>
+            <id>skip-cobertura</id>
+            <activation>
+                <jdk>11</jdk> <!-- Only activate for JDK 11 or above -->
+            </activation>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>1.4.0</version>
-                        <executions>
-                            <execution>
-                                <phase>generate-sources</phase>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                            </execution>
-                        </executions>
+                        <artifactId>cobertura-maven-plugin</artifactId>
+                        <version>${cobertura.version}</version>
                         <configuration>
-                            <executable>bower</executable>
-                            <arguments>
-                                <argument>install</argument>
-                            </arguments>
-                            <workingDirectory>${basedir}</workingDirectory>
+                            <skip>true</skip>
                         </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>less-install</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.lesscss</groupId>
-                        <artifactId>lesscss-maven-plugin</artifactId>
-                        <version>1.7.0.1.1</version>
-                        <configuration>
-                            <sourceDirectory>${project.basedir}/src/main/webapp/resources/less</sourceDirectory>
-                            <outputDirectory>${project.basedir}/src/main/webapp/resources/css</outputDirectory>
-                            <compress>true</compress>
-                            <includes>
-                                <include>petclinic.less</include>
-                            </includes>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>compile</goal>
-                                </goals>
-                            </execution>
-                        </executions>
                     </plugin>
                 </plugins>
             </build>
         </profile>
     </profiles>
-
-    <url>demopetclinic</url>
 </project>
