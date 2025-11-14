@@ -10,22 +10,30 @@
     <packaging>war</packaging>
 
     <properties>
+        <!-- Upgrade Java version -->
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <!-- Spring -->
         <spring-io-platform.version>2.0.3.RELEASE</spring-io-platform.version>
         <spring-data-jdbc.version>1.1.0.RELEASE</spring-data-jdbc.version>
 
+        <!-- Java EE / Java SE dependencies -->
         <tomcat.version>7.0.59</tomcat.version>
+
+        <!-- Test -->
         <assertj.version>2.2.0</assertj.version>
 
+        <!-- Dates -->
         <jodatime-hibernate.version>1.3</jodatime-hibernate.version>
         <jodatime-jsptags.version>1.1.1</jodatime-jsptags.version>
         <jadira-usertype-core.version>3.2.0.GA</jadira-usertype-core.version>
 
+        <!-- Others -->
         <mysql-driver.version>5.1.36</mysql-driver.version>
 
+        <!-- Web dependencies -->
         <dandelion.version>1.1.1</dandelion.version>
         <dandelion.datatables.version>1.1.0</dandelion.datatables.version>
 
@@ -33,6 +41,7 @@
     </properties>
 
     <dependencyManagement>
+        <!-- Import the maven Spring IO Platform Bill Of Materials (BOM) -->
         <dependencies>
             <dependency>
                 <groupId>io.spring.platform</groupId>
@@ -45,11 +54,14 @@
     </dependencyManagement>
 
     <dependencies>
+        <!-- Jadira Usertype Core -->
         <dependency>
             <groupId>org.jadira.usertype</groupId>
             <artifactId>usertype.core</artifactId>
             <version>${jadira-usertype-core.version}</version>
         </dependency>
+
+        <!-- Tomcat -->
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-servlet-api</artifactId>
@@ -68,6 +80,7 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- JSTL -->
         <dependency>
             <groupId>javax.servlet.jsp.jstl</groupId>
             <artifactId>javax.servlet.jsp.jstl-api</artifactId>
@@ -77,12 +90,14 @@
             <artifactId>taglibs-standard-jstlel</artifactId>
         </dependency>
 
+        <!-- JSON -->
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
             <scope>test</scope>
         </dependency>
 
+        <!-- Spring Boot Dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
@@ -120,6 +135,7 @@
             <artifactId>spring-oxm</artifactId>
         </dependency>
 
+        <!-- AspectJ -->
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
@@ -130,12 +146,14 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- Tomcat JDBC -->
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jdbc</artifactId>
             <scope>runtime</scope>
         </dependency>
 
+        <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -146,6 +164,7 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- Joda Time -->
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
@@ -161,12 +180,14 @@
             <version>${jodatime-jsptags.version}</version>
         </dependency>
 
+        <!-- Database -->
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
             <scope>runtime</scope>
         </dependency>
 
+        <!-- Hibernate -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
@@ -190,6 +211,7 @@
             </exclusions>
         </dependency>
 
+        <!-- Test Artifacts -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
@@ -217,6 +239,7 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Dandelion -->
         <dependency>
             <groupId>com.github.dandelion</groupId>
             <artifactId>dandelion-jsp</artifactId>
@@ -224,15 +247,36 @@
         </dependency>
         <dependency>
             <groupId>com.github.dandelion</groupId>
-            <artifactId>dandelion-datatables</artifactId>
+            <artifactId>datatables-jsp</artifactId>
             <version>${dandelion.datatables.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.dandelion</groupId>
+            <artifactId>datatables-export-itext</artifactId>
+            <version>${dandelion.datatables.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+        </dependency>
 
+        <!-- JAXB API -->
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>2.3.3</version>
+        </dependency>
+
+        <!-- JAXB Runtime (implementation) -->
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>2.3.5</version>
+        </dependency>
     </dependencies>
 
     <build>
         <defaultGoal>install</defaultGoal>
-
         <testResources>
             <testResource>
                 <directory>${project.basedir}/src/test/java</directory>
@@ -241,9 +285,8 @@
                 <directory>${project.basedir}/src/test/resources</directory>
             </testResource>
         </testResources>
-
         <plugins>
-            <!-- Compiler Plugin -->
+            <!-- Maven Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -258,7 +301,7 @@
                 </configuration>
             </plugin>
 
-            <!-- Surefire Plugin for Tests -->
+            <!-- Maven Surefire Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -270,13 +313,37 @@
                 </configuration>
             </plugin>
 
-            <!-- Maven WAR Plugin -->
+            <!-- Maven War Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>2.3</version>
+                <version>3.2.3</version>
                 <configuration>
                     <warName>petclinic</warName>
+                </configuration>
+            </plugin>
+
+            <!-- Maven Assembly Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
+
+            <!-- Maven Tomcat Plugin -->
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <server>tomcat-development-server</server>
+                    <port>9966</port>
+                    <path>/petclinic</path>
                 </configuration>
             </plugin>
 
@@ -286,7 +353,7 @@
                 <artifactId>cobertura-maven-plugin</artifactId>
                 <version>${cobertura.version}</version>
                 <configuration>
-                    <skip>true</skip> <!-- Skip Cobertura Plugin -->
+                    <skip>true</skip>
                 </configuration>
                 <executions>
                     <execution>
@@ -297,29 +364,17 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!-- SonarQube Plugin -->
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.9.0.2155</version>
-                <configuration>
-                    <sonar.host.url>http://localhost:9000</sonar.host.url> <!-- Adjust SonarQube URL -->
-                    <sonar.login>${sonar.login}</sonar.login> <!-- Sonar login token -->
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 
     <reporting>
         <plugins>
-            <!-- Disable Cobertura Plugin for reporting -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
                 <version>${cobertura.version}</version>
                 <configuration>
-                    <skip>true</skip> <!-- Skip Cobertura in reporting -->
+                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>
@@ -327,22 +382,61 @@
 
     <profiles>
         <profile>
-            <id>skip-cobertura</id>
-            <activation>
-                <jdk>11</jdk> <!-- Only activate for JDK 11 or above -->
-            </activation>
+            <id>bower-install</id>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>cobertura-maven-plugin</artifactId>
-                        <version>${cobertura.version}</version>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.4.0</version>
+                        <executions>
+                            <execution>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                         <configuration>
-                            <skip>true</skip>
+                            <executable>bower</executable>
+                            <arguments>
+                                <argument>install</argument>
+                            </arguments>
+                            <workingDirectory>${basedir}</workingDirectory>
                         </configuration>
                     </plugin>
                 </plugins>
             </build>
         </profile>
+
+        <profile>
+            <id>less-install</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.lesscss</groupId>
+                        <artifactId>lesscss-maven-plugin</artifactId>
+                        <version>1.7.0.1.1</version>
+                        <configuration>
+                            <sourceDirectory>${project.basedir}/src/main/webapp/resources/less</sourceDirectory>
+                            <outputDirectory>${project.basedir}/src/main/webapp/resources/css</outputDirectory>
+                            <compress>true</compress>
+                            <includes>
+                                <include>petclinic.less</include>
+                            </includes>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>compile</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
+
+    <url>demopetclinic</url>
 </project>
