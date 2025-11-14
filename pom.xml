@@ -292,6 +292,17 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
+            <!-- sonar -->
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.9.1.2184</version>
+                <configuration>
+                    <properties>
+                        <sonar.java.binaries>${project.build.directory}/classes</sonar.java.binaries>
+                    </properties>
+                </configuration>
+            </plugin>
 
             <!-- Maven Surefire Plugin -->
             <plugin>
